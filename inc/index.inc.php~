@@ -1,0 +1,40 @@
+<h3>Передача переменных через формы</h3>
+
+<p>Интерактивные сайты принимают ввод от пользователей. Один из распространённых способов получения ввода - формы.</p>
+
+<p>В этом уроке посмотрим, как создать форму и обработать ввод на сервере.
+&ltform&gt
+
+При создании формы участвуют два важных атрибута: action и method.
+
+action
+    Используется для ввода URL, куда отправляется форма. Это может быть PHP-файл, который обрабатывает ввод.
+method</p>
+<p>    Может иметь значение "post" или "get", которые являются различными методами передачи данных. Пока вам нет необходимости углубляться в отличия этих методов; методом "get" данные отправляются через URL, а методом "post" - как блок данных через стандартный сервис ввода/standard input service (STDIN). В последнем пройденном уроке мы видели, как данные получаются через URL с использованием документация$_GET. В этом уроке мы рассмотрим, как получаются данные, отправленные через форму методом "post". </p>
+<hr/>
+<?php
+   require "lib.php";
+   selectBlogs();
+ /* $link=mysqli_connect(DB_HOST,DB_LOGIN,DB_PASSWORD,DB_NAME) or die ("ERROR connect to db!");
+  
+  $check=mysqli_query($link,"SET NAMES 'utf8'");
+   $sql="SELECT id,name,email,msg,datetime FROM blogs ORDER BY datetime DESC";
+   $res=mysqli_query($link,$sql);
+   
+   if(!$res)
+	echo mysqli_error($link);
+   mysqli_close($link);
+   $row_count=mysqli_num_rows($res);
+   if($row_count>0)
+       echo "<p>На данный момент на нашем сайте опубликовано $row_count статей</p>";
+  while($sel=mysqli_fetch_assoc($res)){
+	//echo $sel['name']."<br/>";
+	echo "<hr><p style='margin-left:15px;font-weight:bold'>{$sel['datetime']}<br/>{$sel['name']} написал<br/>{$sel['msg']}</p>";
+
+   }
+
+   //echo "!!!!!!!!!!!!!";*/
+ 
+
+
+?>

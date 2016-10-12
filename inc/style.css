@@ -1,0 +1,71 @@
+body{
+   margin:0;
+   padding:0;
+   font-family:Arial,Helvetica,sans-serif;
+   background-color:#FF9;
+}
+
+#header{
+   	/*border:1px solid #FF0066;*/
+	height: 270px;
+
+}
+#header .slogan{
+       /* border:1px solid #FF0066;*/
+        float: left;
+        width: 400px;
+	text-align:right;
+	margin-right: 2em;
+	margin-top: 2em;
+
+
+}
+h2{
+	margin-left:200px;
+}
+#header .logo{
+       /* border:1px solid #FF0066;*/
+	float: left;
+	width:170px;
+	height:170px;
+	margin-left: 1.5em;
+	margin-top: 0.5em;
+
+}
+#content{
+ /*  border:1px solid #FF0066;*/
+	margin-left: 16em;
+	margin-right: 2em;
+	text-align: justify;
+
+}
+
+#nav{
+        /*border:1px solid #FF0066;*/
+	position:absolute;
+	top:300px;
+	left:2em;
+	padding:2em;
+}
+#nav ul {
+	list-style: none;
+}
+#nav li{
+	text-decoration:none;
+	border-bottom: 1px dotted #B2BCC6;
+}
+#nav a{
+	text-decoration:none;
+}
+
+#footer{
+  /* border:1px solid #FF0066;*/
+	clear: both;
+	text-align: center;
+	border-top: 1px dotted #B2BCC6;
+	margin-top: 10px;
+	font: 90% Georgia, "Times New Roman", Times, serif;
+	color: #2A4F6F;
+	background-color: transparent;
+
+}

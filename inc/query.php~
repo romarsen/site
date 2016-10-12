@@ -1,0 +1,198 @@
+<?php
+	session_start();
+	
+	/*const DB_HOST='localhost';
+        const DB_LOGIN='root';
+        const DB_PASSWORD="123";
+        const DB_NAME='myforms_db';*/	
+
+ 	 $_SESSION['error_name'] = "";
+	 $_SESSION['error_email'] = "";
+	 $_SESSION['error_msg '] = "";	
+ 	 $_SESSION['error_pass'] = "";
+	 $_SESSION['name'] = "";
+	 $_SESSION['email'] = "";
+	 $_SESSION['msg'] = "";
+         $_SESSION['del'] = "";
+	
+	
+   require "lib.php";
+  
+ 
+
+ $link=mysqli_connect(DB_HOST,DB_LOGIN,DB_PASSWORD,DB_NAME) or die ("ERROR connect to db!");
+  
+   $check=mysqli_query($link,"SET NAMES 'utf8'");
+  
+
+if(isset($_POST["add"])){//($_SERVER['REQUEST_METHOD']=='POST'){
+	 //require "lib.php";
+
+	$name=filter($_POST['name'],'s');
+	$pass=filter($_POST['pass'],'s');
+	$email=filter($_POST['email'],'s');
+	$msg=filter($_POST['msg'],'s');
+
+	/*$user=['name'=>$name,'pass'=>$pass,'email'=>$email,'msg'=>$msg];
+	
+        $str=base64_encode(serialize($user));*/
+	
+	
+	
+	$_SESSION['name']=$name;
+	$_SESSION['pass']=$pass;
+	$_SESSION['email']=$email;
+	$_SESSION['msg']=$msg;
+
+	$error=false;
+	if(strlen($name)==0){
+	   $_SESSION['error_name']="Введите логин";
+	   $error=true;
+	}
+	if(strlen($pass)==0){
+	   $_SESSION['error_pass']="Введите пароль";
+	   $error=true;
+	}
+	
+	if($email=="" || !preg_match("/@/",$email)){
+	   $_SESSION['error_email']="ВВедите корректный email";
+	   $error=true;
+	}
+	
+
+	if(strlen($msg)==0){
+	   $_SESSION['error_msg']="Введите сообщение";
+	   $error=true;
+	}
+		   
+	
+	if($error){
+	     //header("Location: http://myforms.com/inc/add.php");
+	     header("Location: http://myforms.com/index.php?id=add");
+	     exit;
+	}
+	 else{
+	  /*$name = mysqli_real_escape_string($link, $name);
+	   $pass = md5(mysqli_real_escape_string($link, $pass));
+	   $email = mysqli_real_escape_string($link, $email);
+	   $msg = mysqli_real_escape_string($link, $msg);
+	
+
+	  $sql='SELECT * FROM blogs WHERE name="'.$name.'"'; //перевірка: чи існує в базі даних цей блогер $sql1
+          $res=mysqli_query($link,$sql) or die (mysqli_error($link));//$res1
+	 
+	  $row=mysqli_num_rows($res);
+	  echo "<br/>$row<br/>";
+	if($row==0){//це новий блогер, реєструємо його
+	    $sql = "INSERT INTO blogs (name,password, email) VALUES ('$name', '$pass','$email')";//$sql2
+	    $res=mysqli_query($link,$sql) or die (mysqli_error($link));
+	}*/
+	
+
+
+	   if(!addBloger($name, $pass,$email, $msg)){
+	       echo mysqli_error($link);
+	       echo "<br/>".$_SESSION['error_pass']."<br/>";
+	     //echo 'Произошла ошибка при добавлении блога';
+	       header("Location: http://myforms.com/index.php?id=add");
+	       exit;
+	   }
+	   else{
+	     mysqli_close($link);
+	     session_destroy();
+	     header("Location: http://myforms.com/index.php");
+	     exit;
+	   } 
+
+
+	
+	}
+}
+
+if(isset($_POST["del_art"])){
+   // require "lib.php";
+   $name=filter($_POST["name"],'s');
+   $pass=filter($_POST["pass"],'s');
+
+   $_SESSION['name']=$name;
+   $_SESSION['pass']=$pass;
+
+   $error=false;
+
+   if(strlen($name)==0){
+      $_SESSION["error_name"]="Введите логин";
+      $error=true;
+   }
+   if(strlen($pass)==0){
+      $_SESSION["error_pass"]="Введите пароль";
+      $error=true;
+   }
+
+   if($error){
+      header("Location:http://myforms.com/index.php/?id=del.php");
+      exit;
+   }
+   else{
+
+    /*$name=mysqli_real_escape_string($link,$name);
+     $pass=md5(mysqli_real_escape_string($link,$pass));  
+
+     $sql="SELECT password FROM blogs WHERE name=$name";
+     $res=mysqli_query($link,$sql);  
+     $row = mysqli_fetch_array($res);  
+     if($row['password']==$pass){
+
+     }*/
+
+
+
+
+
+    // echo "<br><p>what is it?     ".$name."<br/>".$pass."</p><br/>".$row['password']."<br/><br/><br/>";
+
+     //$sql1="SELECT id FROM blogs WHERE name=$name AND password=$pass";
+     //$res1=mysqli_query($link,$sql1);   
+     //$row = mysqli_fetch_assoc($res1); 
+    //echo "<br><p>what is it?   ".$res1."</p><br/>".mysqli_error($link)."";
+   //  $ids=$row['id'];
+     $ids=searchLogin($name,$pass);
+
+
+     $ids=filter($ids,'i');
+   //echo "<br><p>what is it?   ".$ids."</p><br/>";
+      switch($ids){
+         case -1:
+             $_SESSION['error_name']= mysqli_error($link);
+	    // $_SESSION['error_name']="Укажите правильный догин или пароль!";
+            break;
+         case -2:
+            $_SESSION['error_name']="Укажите правильный логин или пароль!";
+	    break;
+         default:
+            //$sql="SELECT msg FROM blogs WHERE id=$ids";
+	   // $res=mysqli_query($link,$sql);
+	    $_SESSION['del']=$ids;
+	    //header("Location:http://myforms.com/index.php?id=del.php");
+	    //exit;
+     }
+       // mysqli_close($link);
+    header("Location:http://myforms.com/index.php?id=del");
+    exit;
+
+   }
+   
+}
+
+if($_SERVER['REQUEST_METHOD']=="GET" AND (isset($_GET['del']))){
+   $ids=filter($_GET['del'],'i');
+   if($ids>0){
+      $delete="DELETE FROM posts WHERE id=$ids";
+      $res=mysqli_query($link,$delete) or die(mysqli_error());
+      mysqli_close();
+      header("Location:http://myforms.com/index.php?id=del");
+      exit;
+   }
+   
+}
+
+

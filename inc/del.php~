@@ -1,0 +1,80 @@
+<?php
+   session_start();
+?>
+<p>Для удаления своей публикации подтвердите регистрацию</p>
+<br/>
+<br/>
+<form name="del" action="inc/query.php" method="post">
+   <label>Логин</label><br/>
+   <input type="text" name="name" value="<?=$_SESSION['name'];?>"/>
+   <span style="color:red"><?=$_SESSION['error_name'];?></span>
+   <br/><label>Пароль</label><br/>
+   <input type="password" name="pass" value="<?=$_SESSION['pass'];?>"/>
+   <span style="color:red"><?=$_SESSION["error_pass"];?></span>
+   <br/>
+   <br/>
+   <input type="submit" name="del_art" value="Войти"/>
+   <br/>
+</form>
+   <br/><hr/>
+<?php
+   require "lib.php";
+   delMessage();
+  /* global $link;
+   if($_SERVER['REQUEST_METHOD']=="GET" AND (isset($_GET['del']))){
+   $ids=filter($_GET['del'],'i');
+   if($ids>0){
+      $delete="DELETE FROM posts WHERE id=$ids";
+      $res=mysqli_query($link,$delete);// or die(mysqli_error($link));
+      if(!$res)
+         echo mysqli_error($link);
+      mysqli_close();
+      header("Location:http://myforms.com/index.php?id=del");
+      exit;
+   }
+   
+}*/
+
+  /* $link=mysqli_connect(DB_HOST,DB_LOGIN,DB_PASSWORD,DB_NAME) or die ("ERROR connect to db!");
+  
+   $check=mysqli_query($link,"SET NAMES 'utf8'");
+   if($_SESSION['del']!=0){
+      $sql="SELECT msg,datetime FROM blogs WHERE id={$_SESSION['del']} ORDER BY datetime DESC";
+      $res=mysqli_query($link,$sql);
+   
+   if(!$res){
+	echo mysqli_error($link);
+        mysqli_close($link);
+   }
+   else{
+       mysqli_close($link);
+       $row_count=mysqli_num_rows($res);
+       if($row_count>0){
+         echo "<p>На данный момент Вами опубликовано $row_count статей</p>";
+	 while($sel=mysqli_fetch_assoc($res)){
+	     echo "<hr><p style='margin-left:15px;font-weight:bold'>{$sel['datetime']}<br/>{$sel['msg']} </p>";
+         }
+       }
+       else
+	  echo "<p>На данный момент на нашем сайте публикаций нет</p>";
+   }
+}*/
+
+
+
+        // }
+  // }
+  // else
+      //echo "У вас нет статей :(";
+
+   // mysqli_close($link);
+?>
+    
+<?php
+   session_destroy();
+?>
+
+
+
+
+
